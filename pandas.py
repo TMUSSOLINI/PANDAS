@@ -53,3 +53,85 @@ df.groupby("Cidade")["Receita"].sum()
 
 df.sort_values("Receita", ascending= False).head(10)
 
+df["Data"] = df["Data"].astype("int64")
+
+df.dtypes
+
+df["Data"]= pd.to_datetime(df["Data"])
+
+df.dtypes
+
+df.groupby(df["Data"].dt.year)["Receita"].sum()
+
+df["Ano_Venda"] = df["Data"].dt.year
+
+df.sample(5)
+
+df["Mes_Venda"], df["Dia_Venda"] = df["Data"].dt.month, df["Data"].dt.day
+
+df.sample(5)
+
+df["Data"].min()
+
+df["Data"].max()
+
+df["Diferença_Dias"] = df["Data"] - df["Data"].min()
+
+df.sample(5)
+
+df["Trimestre_Venda"] = df["Data"].dt.quarter
+
+df.sample(5)
+
+Vendas_Marco_19 = df.loc[(df["Data"].dt.year == 2019) & (df["Data"].dt.month == 3)]
+
+df.sample(5)
+
+Vendas_Marco_19
+
+df['LojaID'].value_counts(ascending = False)
+
+df['LojaID'].value_counts(ascending = False).plot.bar()
+
+df['LojaID'].value_counts(ascending = True).plot.barh();
+
+df.groupby(df["Data"].dt.year)["Receita"].sum().plot.pie();
+
+df["Cidade"].value_counts()
+
+import matplotlib.pyplot as plt
+df["Cidade"].value_counts().plot.bar(title="Total Valor por Cidade")
+plt.xlabel("Cidade")
+plt.ylabel("Total Vendas");
+
+df["Cidade"].value_counts().plot.barh(title="Total vendas por cidade", color="Purple")
+plt.xlabel("Total Vendas")
+plt.ylabel("Cidade")
+
+plt.style.use("ggplot")
+
+df.groupby(df["Mes_Venda"])["Qtde"].sum().plot(title="Total vendido x mes")
+plt.xlabel("Mes")
+plt.ylabel("Total Produtos vendidos")
+plt.legend()
+
+df.groupby(df["Mes_Venda"])["Qtde"].sum()
+
+Ano_2019 = df[df["Ano_Venda"] == 2019]
+
+Ano_2019.groupby(Ano_2019["Mes_Venda"])["Qtde"].sum().plot(marker="v")
+plt.xlabel("Mes")
+plt.ylabel("Total vendas Mes");
+plt.legend();
+
+plt.hist(df["Qtde"], color= "Magenta");
+
+plt.scatter(x=Ano_2019["Dia_Venda"], y= Ano_2019["Receita"])
+
+Ano_2019.groupby(Ano_2019["Mes_Venda"])["Qtde"].sum().plot(Marker="v")
+plt.title("Quantidade de produtos vendidos x mes")
+plt.xlabel("Mes")
+plt.ylabel("Total vendido Mes")
+plt.legend();
+plt.savefig("Grafico QTDE X MES.png")
+
